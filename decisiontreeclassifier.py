@@ -398,7 +398,6 @@ if __name__ == "__main__":
         y.append(label)
 
     tree = DecisionTreeClassifier(max_depth=4)
-    print(y)
     tree.fit(X, y)
 
     test = [
