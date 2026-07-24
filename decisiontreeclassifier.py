@@ -176,12 +176,12 @@ class DecisionTreeClassifier:
 
         if self.max_depth is not None and depth >= self.max_depth:
             return Node(label=self._majority(y))
-        
+
         best_split = self._best_split(X, y)
 
         if best_split is None:
             return Node(label=self._majority(y))
-        
+
         best_index, best_threshold = best_split
 
         feat_ls = [feat[best_index] for feat in X]
@@ -191,14 +191,14 @@ class DecisionTreeClassifier:
 
         for index, individual_feat_and_feat in enumerate(zip(feat_ls, X)): # feat is horizontal, feat_ls is vertical
             individual_feat, feat = individual_feat_and_feat
-            
+
             if individual_feat <= best_threshold:
                 left_X.append(feat)
                 left_y.append(y[index])
             else:
                 right_X.append(feat)
                 right_y.append(y[index])
-        
+
         left_subtree = self._build_tree(left_X, left_y, depth+1)
 
         right_subtree = self._build_tree(right_X, right_y, depth+1)
@@ -246,7 +246,7 @@ class DecisionTreeClassifier:
                 left, right = [], []
                 for a, b in zip(X, y):
                     left.append(b) if a[j] <= val else right.append(b)
-                
+
                 if not (left and right):
                     continue
 
@@ -417,5 +417,5 @@ if __name__ == "__main__":
     for sample, prediction in zip(test, predictions):
         label = "Athletic" if prediction == 1 else "Not Athletic"
         print(f"{sample} -> {label}")
-    
+
     tree.print_tree()
