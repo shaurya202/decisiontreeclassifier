@@ -102,11 +102,7 @@ class RandomForestClassifier:
         Final prediction:
         1
         """
-        votes = []
-
-        for decision_tree in self.trees:
-            prediction = decision_tree.predict([sample])[0]
-            votes.append(prediction)
+        votes = [tree.predict([sample])[0] for tree in self.trees]
 
         return self._majority_vote(votes)
 
@@ -135,6 +131,7 @@ class RandomForestClassifier:
         2. Repeat len(X) times:
             a. Pick a random index from the dataset.
             b. Add X[index] to the new feature list.
+
             c. Add y[index] to the new label list.
         3. Return the new X and y lists.
 
