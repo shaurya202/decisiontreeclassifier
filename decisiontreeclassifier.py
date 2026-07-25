@@ -1,5 +1,7 @@
 from collections import Counter
 
+import random
+
 class Node:
     """A node in the decision tree."""
 
@@ -55,7 +57,7 @@ class DecisionTreeClassifier:
     Supports numerical features and classification problems.
     """
 
-    def __init__(self, max_depth=None, min_samples_split=2):
+    def __init__(self, max_depth=None, min_samples_split=2, max_features: int | None = None):
         """
         Initialize the decision tree.
 
@@ -73,6 +75,8 @@ class DecisionTreeClassifier:
         self.max_depth = max_depth
         self.min_samples_split = min_samples_split
         self.root = None
+
+        self.max_features = max_features
 
     def fit(self, X, y):
         """
@@ -235,7 +239,15 @@ class DecisionTreeClassifier:
         best_feat_and_threshold = [0, 0] # [best feature index, best threshold]
         best_gain = 0
 
-        for j in range(cols):
+        if self.max_features is None:
+            candidate_features = range(cols)
+        else:
+            candidate_features = random.sample(
+                range(cols),
+                min(self.max_features, cols)
+            )
+
+        for j in candidate_features:
             unique_vals = set()
             for i in range(rows):
                 unique_vals.add(X[i][j])
@@ -353,10 +365,7 @@ class DecisionTreeClassifier:
         print(f"{indent}[{feat_name} > {node.threshold}]")
         self._print_node(node.right, depth + 1)
 
-
 if __name__ == "__main__":
-    import random
-
     X = []
     y = []
 
