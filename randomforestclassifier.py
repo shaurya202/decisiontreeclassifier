@@ -172,7 +172,7 @@ class RandomForestClassifier:
         You already imported Counter.
         """
 
-        return Counter(predictions).most_common()[0][0]
+        return Counter(predictions).most_common(1)[0][0]
 
 
     def print_forest(self):
